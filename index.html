@@ -99,10 +99,17 @@
         .page {
             display: none;
             padding: 2rem 0;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
         }
 
         .page.active {
             display: block;
+            opacity: 1;
+        }
+
+        .page.fade-out {
+            opacity: 0;
         }
 
         .hero {
@@ -865,12 +872,40 @@
 
     <script>
         function showPage(pageName) {
-            // Hide all pages
             const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
+            const currentPage = document.querySelector('.page.active');
+            const targetPage = document.getElementById(pageName);
             
-            // Show selected page
-            document.getElementById(pageName).classList.add('active');
+            // If switching to a different page
+            if (currentPage && currentPage !== targetPage) {
+                // Start fade out of current page
+                currentPage.classList.add('fade-out');
+                
+                // After fade out completes, switch pages
+                setTimeout(() => {
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.classList.remove('active', 'fade-out');
+                    });
+                    
+                    // Show target page
+                    targetPage.classList.add('active');
+                    
+                    // Small delay to ensure display change is processed
+                    setTimeout(() => {
+                        // Remove any fade-out class and let it fade in
+                        targetPage.classList.remove('fade-out');
+                    }, 10);
+                    
+                }, 400); // Match the CSS transition duration
+            } else if (!currentPage) {
+                // First load - just show the page
+                pages.forEach(page => page.classList.remove('active'));
+                targetPage.classList.add('active');
+                setTimeout(() => {
+                    targetPage.classList.remove('fade-out');
+                }, 10);
+            }
             
             // Update navigation
             const navLinks = document.querySelectorAll('.nav-link');
