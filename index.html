@@ -216,6 +216,26 @@
             transform: translateY(-2px);
         }
 
+        .back-to-home {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-home:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -254,6 +274,7 @@
                 padding: 1rem;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
                 gap: 0.5rem;
+                z-index: 1000;
             }
 
             .nav-links a {
@@ -261,6 +282,12 @@
                 padding: 1rem;
                 text-transform: none;
                 color: white;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
             }
 
             .nav-links.show {
@@ -281,6 +308,15 @@
 
             .grid {
                 grid-template-columns: 1fr;
+            }
+
+            .page {
+                padding: 1rem 0;
+            }
+
+            .card {
+                margin: 1rem 0;
+                padding: 1.5rem;
             }
         }
 
@@ -305,7 +341,7 @@
             <div class="logo" onclick="showPage('home')">OB/GYN QI Hub</div>
             <button class="mobile-menu" onclick="toggleMenu()">☰</button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#" class="nav-link active" data-page="safety">Safety</a></li>
+                <li><a href="#" class="nav-link" data-page="safety">Safety</a></li>
                 <li><a href="#" class="nav-link" data-page="protocols">Protocols</a></li>
                 <li><a href="#" class="nav-link" data-page="training">Training</a></li>
                 <li><a href="#" class="nav-link" data-page="culture">Just Culture</a></li>
@@ -370,8 +406,11 @@
     </div>
 
     <!-- Safety Page -->
-    <div class="page active" id="safety">
+    <div class="page" id="safety">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Patient Safety</h1>
                 
@@ -436,6 +475,9 @@
     <!-- Protocols Page -->
     <div class="page" id="protocols">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Clinical Protocols</h1>
                 
@@ -494,6 +536,9 @@
     <!-- Training Page -->
     <div class="page" id="training">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Training & Education</h1>
                 
@@ -548,6 +593,9 @@
     <!-- Just Culture Page -->
     <div class="page" id="culture">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Just Culture</h1>
                 
@@ -598,6 +646,9 @@
     <!-- Quality Metrics Page -->
     <div class="page" id="metrics">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Quality Metrics</h1>
                 
@@ -647,6 +698,9 @@
     <!-- Simulation Page -->
     <div class="page" id="simulation">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Simulation Training</h1>
                 
@@ -695,6 +749,9 @@
     <!-- Research Page -->
     <div class="page" id="research">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Research & QI</h1>
                 
@@ -747,6 +804,9 @@
     <!-- Resources Page -->
     <div class="page" id="resources">
         <div class="container">
+            <button class="back-to-home" onclick="showPage('home')">
+                ← Back to All Modules
+            </button>
             <div class="card">
                 <h1>Resources</h1>
                 
@@ -823,6 +883,9 @@
 
             // Close mobile menu
             document.getElementById('navLinks').classList.remove('show');
+
+            // Scroll to top of page for better mobile experience
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMenu() {
