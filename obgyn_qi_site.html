@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OB/GYN QI Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #1e3a8a;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0 1rem 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .logo:hover {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background-color: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            padding: 2rem 0;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .section-card {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .section-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .level-section {
+            margin: 2rem 0;
+        }
+
+        .level-title {
+            color: #1e40af;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #3b82f6;
+        }
+
+        .checklist {
+            background: rgba(59, 130, 246, 0.05);
+            border-left: 4px solid #3b82f6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+            accent-color: #3b82f6;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 2px solid #3b82f6;
+            color: #1e40af;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                text-align: center;
+                padding: 1rem;
+                text-transform: none;
+                color: white;
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            nav {
+                position: relative;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 2rem;
+            right: 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo" onclick="showPage('home')">OB/GYN QI Hub</div>
+            <button class="mobile-menu" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" class="nav-link active" data-page="safety">Safety</a></li>
+                <li><a href="#" class="nav-link" data-page="protocols">Protocols</a></li>
+                <li><a href="#" class="nav-link" data-page="training">Training</a></li>
+                <li><a href="#" class="nav-link" data-page="culture">Just Culture</a></li>
+                <li><a href="#" class="nav-link" data-page="metrics">Metrics</a></li>
+                <li><a href="#" class="nav-link" data-page="simulation">Simulation</a></li>
+                <li><a href="#" class="nav-link" data-page="research">Research</a></li>
+                <li><a href="#" class="nav-link" data-page="resources">Resources</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <div class="page active" id="home">
+        <div class="hero">
+            <div class="container">
+                <h1>Quality Improvement & Patient Safety</h1>
+                <p>Excellence in Obstetric and Gynecologic Care</p>
+            </div>
+        </div>
+        
+        <div class="container">
+            <div class="card">
+                <h2>Welcome</h2>
+                <p>Access evidence-based resources, protocols, and training materials to support quality improvement and patient safety.</p>
+            </div>
+
+            <div class="grid">
+                <div class="section-card" onclick="showPage('safety')">
+                    <h3>🛡️ Patient Safety</h3>
+                    <p>Safety protocols and risk management</p>
+                </div>
+                <div class="section-card" onclick="showPage('protocols')">
+                    <h3>📋 Clinical Protocols</h3>
+                    <p>Evidence-based care guidelines</p>
+                </div>
+                <div class="section-card" onclick="showPage('training')">
+                    <h3>🎓 Training</h3>
+                    <p>Education and competency modules</p>
+                </div>
+                <div class="section-card" onclick="showPage('culture')">
+                    <h3>🤝 Just Culture</h3>
+                    <p>Learning-focused safety culture</p>
+                </div>
+                <div class="section-card" onclick="showPage('metrics')">
+                    <h3>📊 Quality Metrics</h3>
+                    <p>Performance tracking and outcomes</p>
+                </div>
+                <div class="section-card" onclick="showPage('simulation')">
+                    <h3>🏥 Simulation</h3>
+                    <p>Skills training and team exercises</p>
+                </div>
+                <div class="section-card" onclick="showPage('research')">
+                    <h3>🔬 Research</h3>
+                    <p>QI studies and evidence review</p>
+                </div>
+                <div class="section-card" onclick="showPage('resources')">
+                    <h3>📚 Resources</h3>
+                    <p>References and educational materials</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety Page -->
+    <div class="page active" id="safety">
+        <div class="container">
+            <div class="card">
+                <h1>Patient Safety</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Basic Safety</h2>
+                    <div class="info-box">
+                        <h3>🎯 Essential Safety Practices</h3>
+                        <p>Fundamental safety protocols every team member must know.</p>
+                    </div>
+                    
+                    <div class="checklist">
+                        <h4>Daily Safety Checklist</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s1-1">
+                            <label for="s1-1">Hand hygiene before patient contact</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s1-2">
+                            <label for="s1-2">Patient identification verification</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s1-3">
+                            <label for="s1-3">Allergy check completed</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Advanced Safety</h2>
+                    <div class="checklist">
+                        <h4>Pre-Procedure Safety</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s2-1">
+                            <label for="s2-1">Time-out performed</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s2-2">
+                            <label for="s2-2">Consent verified</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="s2-3">
+                            <label for="s2-3">Equipment checked</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Safety Excellence</h2>
+                    <div class="card">
+                        <h4>Advanced Safety Systems</h4>
+                        <ul>
+                            <li>Predictive analytics for risk assessment</li>
+                            <li>Real-time safety monitoring</li>
+                            <li>AI-powered safety alerts</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Protocols Page -->
+    <div class="page" id="protocols">
+        <div class="container">
+            <div class="card">
+                <h1>Clinical Protocols</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Basic Protocols</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <h4>Routine Prenatal Care</h4>
+                            <ul>
+                                <li>Initial visit assessment</li>
+                                <li>Basic lab work</li>
+                                <li>Patient education</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>Labor Admission</h4>
+                            <ul>
+                                <li>Triage protocols</li>
+                                <li>Initial monitoring</li>
+                                <li>Pain assessment</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Advanced Protocols</h2>
+                    <div class="checklist">
+                        <h4>Comprehensive Care Protocol</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="p2-1">
+                            <label for="p2-1">Genetic screening offered</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="p2-2">
+                            <label for="p2-2">Anatomy scan scheduled</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="p2-3">
+                            <label for="p2-3">GBS screening completed</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Emergency Protocols</h2>
+                    <div class="info-box">
+                        <h3>🚨 Emergency Response</h3>
+                        <p><strong>Postpartum Hemorrhage:</strong> Assess fundus → IV access → Uterotonics → Blood products</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Training Page -->
+    <div class="page" id="training">
+        <div class="container">
+            <div class="card">
+                <h1>Training & Education</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Basic Training</h2>
+                    <div class="checklist">
+                        <h4>Required Competencies</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t1-1">
+                            <label for="t1-1">BLS Certification</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t1-2">
+                            <label for="t1-2">HIPAA Training</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t1-3">
+                            <label for="t1-3">Basic Safety Training</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Advanced Training</h2>
+                    <div class="grid">
+                        <div class="section-card">
+                            <h3>📱 Fetal Monitoring</h3>
+                            <p>2 hours CME</p>
+                        </div>
+                        <div class="section-card">
+                            <h3>🚨 Emergency Procedures</h3>
+                            <p>1.5 hours CME</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Leadership Training</h2>
+                    <div class="card">
+                        <h4>Leadership Development</h4>
+                        <ul>
+                            <li>Quality improvement methods</li>
+                            <li>Team leadership skills</li>
+                            <li>Change management</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Just Culture Page -->
+    <div class="page" id="culture">
+        <div class="container">
+            <div class="card">
+                <h1>Just Culture</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Understanding</h2>
+                    <div class="info-box">
+                        <h3>💡 Core Principle</h3>
+                        <p>Learn from mistakes in a blame-free environment focused on system improvements.</p>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Implementation</h2>
+                    <div class="checklist">
+                        <h4>Incident Response</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="c2-1">
+                            <label for="c2-1">Immediate safety assessment</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="c2-2">
+                            <label for="c2-2">Non-punitive reporting</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="c2-3">
+                            <label for="c2-3">Team debriefing</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Culture Leadership</h2>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number">156</span>
+                            <span>Safe Reports</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">0</span>
+                            <span>Retaliatory Actions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quality Metrics Page -->
+    <div class="page" id="metrics">
+        <div class="container">
+            <div class="card">
+                <h1>Quality Metrics</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Basic Metrics</h2>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number">99.1%</span>
+                            <span>Hand Hygiene</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">98.2%</span>
+                            <span>Patient Satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Clinical Outcomes</h2>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number">0.4%</span>
+                            <span>Infection Rate</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">1.8%</span>
+                            <span>PPH Rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Advanced Analytics</h2>
+                    <div class="card">
+                        <h4>Predictive Analytics</h4>
+                        <ul>
+                            <li>Risk-adjusted outcomes</li>
+                            <li>Trend analysis</li>
+                            <li>Benchmark comparisons</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simulation Page -->
+    <div class="page" id="simulation">
+        <div class="container">
+            <div class="card">
+                <h1>Simulation Training</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Basic Skills</h2>
+                    <div class="card">
+                        <h4>Fundamental Training</h4>
+                        <ul>
+                            <li>Basic life support</li>
+                            <li>Equipment familiarization</li>
+                            <li>Communication practice</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Emergency Scenarios</h2>
+                    <div class="checklist">
+                        <h4>Upcoming Sessions</h4>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="sim-1">
+                            <label for="sim-1">Aug 15: PPH Drill - 2:00 PM</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="sim-2">
+                            <label for="sim-2">Aug 22: Code Blue - 10:00 AM</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Advanced Technology</h2>
+                    <div class="card">
+                        <h4>Innovation in Training</h4>
+                        <ul>
+                            <li>Virtual reality simulations</li>
+                            <li>AI-powered scenarios</li>
+                            <li>Biometric monitoring</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Page -->
+    <div class="page" id="research">
+        <div class="container">
+            <div class="card">
+                <h1>Research & QI</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Evidence Review</h2>
+                    <div class="checklist">
+                        <h4>Recent Updates</h4>
+                        <div class="checklist-item">
+                            <span>ACOG cord clamping guidelines (Jan 2025)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <span>SMFM growth restriction protocols (Dec 2024)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: QI Projects</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <h4>C-Section Rate Reduction</h4>
+                            <p><strong>Lead:</strong> Dr. Martinez<br>
+                            <strong>Goal:</strong> 15% reduction</p>
+                        </div>
+                        <div class="card">
+                            <h4>OR Efficiency</h4>
+                            <p><strong>Lead:</strong> Sarah Chen, RN<br>
+                            <strong>Goal:</strong> 20% faster turnover</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Innovation Research</h2>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number">6</span>
+                            <span>Active Projects</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number">8</span>
+                            <span>Publications</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources Page -->
+    <div class="page" id="resources">
+        <div class="container">
+            <div class="card">
+                <h1>Resources</h1>
+                
+                <div class="level-section">
+                    <h2 class="level-title">Level 1: Quick Reference</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <h4>Emergency Drugs</h4>
+                            <ul>
+                                <li><strong>Oxytocin:</strong> 10-40 units</li>
+                                <li><strong>Methylergonovine:</strong> 0.2mg IM</li>
+                                <li><strong>Carboprost:</strong> 250mcg IM</li>
+                            </ul>
+                        </div>
+                        <div class="card">
+                            <h4>Normal Values</h4>
+                            <ul>
+                                <li><strong>Hemoglobin:</strong> 11-15 g/dL</li>
+                                <li><strong>Platelets:</strong> 150-400 K/μL</li>
+                                <li><strong>FHR:</strong> 110-160 bpm</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 2: Professional Resources</h2>
+                    <div style="text-align: center;">
+                        <a href="https://www.acog.org" class="button" target="_blank">ACOG Guidelines</a>
+                        <a href="https://www.smfm.org" class="button" target="_blank">SMFM Resources</a>
+                        <a href="https://www.cdc.gov" class="button" target="_blank">CDC Guidelines</a>
+                    </div>
+                </div>
+
+                <div class="level-section">
+                    <h2 class="level-title">Level 3: Advanced Tools</h2>
+                    <div class="card">
+                        <h4>Specialized Resources</h4>
+                        <ul>
+                            <li>Risk assessment calculators</li>
+                            <li>Research databases</li>
+                            <li>Advanced clinical tools</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3>Contact Information</h3>
+                    <p><strong>QI Chair:</strong> Dr. Sarah Johnson<br>
+                    <strong>Safety Officer:</strong> Dr. Michael Chen<br>
+                    <strong>24/7 Hotline:</strong> (555) 123-SAFE</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('show');
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('show');
+        }
+
+        // Add event listeners for navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageName = this.getAttribute('data-page');
+                    showPage(pageName);
+                });
+            });
+        });
+
+        // Checkbox interaction
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'checkbox') {
+                if (e.target.checked) {
+                    e.target.parentElement.style.backgroundColor = 'rgba(34, 197, 94, 0.1)';
+                    e.target.parentElement.style.borderColor = '#22c55e';
+                } else {
+                    e.target.parentElement.style.backgroundColor = 'white';
+                    e.target.parentElement.style.borderColor = 'transparent';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
